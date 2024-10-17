@@ -1,23 +1,22 @@
 list(
-  box(h1("SORP Calculator"), width = 12, background = "white"),
-  
+  div(class = "sorp-calculator-container", h1("SORP Calculator")),
+  br(),
+fluidRow(
   sidebarLayout(
-    
-    sidebarPanel(style = "height:737px; overflow-y:auto",
+    sidebarPanel(style = "height:810px; overflow-y:auto",
       
       tabsetPanel(type = "tabs",
                   tabPanel("Parameters",
                            style = "margin-top:1em",
                            sliderInput("sorp_age", "Current Age and Retirement Age:", value = c(45, 66), min = 16, max = getOmega(ILT15_female_reduced)),
                            awesomeRadio("sorp_relationship", "Relationship Status:", choices = list("Single" = 1, "Married" = 2), inline = TRUE),
-                           numericInputIcon(inputId = "sorp_salary", label = "Current Salary:", value = 50000, min = 0, icon = icon("euro")),
-                           numericInputIcon(inputId = "sorp_current_fundvalue", label = "Current Fund Value:", value = 100000, min = 0, icon = icon("euro")),
+                           numericInputIcon(inputId = "sorp_salary", label = "Current Salary:", value = 50000, min = 0, icon = "KES"),
+                           numericInputIcon(inputId = "sorp_current_fundvalue", label = "Current Fund Value:", value = 100000, min = 0, icon = "KES"),
                            selectInput("sorp_pre_freq", "Contribution Frequency:", freq_list),
                            selectInput("sorp_post_freq", "Annuity Payment Frequency:", freq_list),
                            numericInputIcon(inputId = "sorp_emp_contri", label = "Employee Contribution Percentage:", value = 5, min = 0, max = 100, icon = list(NULL, icon("percent"))),
                            numericInputIcon(inputId = "sorp_empr_contri", label = "Employer Contribution Percentage:", value = 5, min = 0, max = 100, icon = list(NULL, icon("percent"))),
-                  ),
-                  
+                  ),                  
                   tabPanel("Assumptions",
                            style = "margin-top:1em",
                            h4(strong("General Assumptions:")),
@@ -41,27 +40,28 @@ list(
                   )
       ),
     ),
-    
-    mainPanel(
-      box(title = "Future Values", status = "primary", solidHeader = T,
+    column(8,
+    fluidRow(
+      box(title = "Future Values", status = "white", solidHeader = T, width = 6,
           h4("Fund Value At Retirement:"),
           h3(textOutput("sorp_text_fundvalue")),
           hr(),
           h4("Periodic Pension Payment:"),
           h3(textOutput("sorp_text_pension_payment"))
       ),
-      box(title = "Discounted Values", status = "primary", solidHeader = T,
+      box(title = "Discounted Values", status = "white", solidHeader = T, width = 6,
           h4("Fund Value At Retirement:"),
           h3(textOutput("sorp_text_fundvalue_discounted")),
           hr(),
           h4("Periodic Pension Payment:"),
           h3(textOutput("sorp_text_pension_payment_discounted"))
-      ),
-      tabBox(type = "tabs", width = 12,
-             tabPanel("Accumulated Wealth", plotOutput("sorp_plot_fundvalue")),
-             tabPanel("Contributions and Fund Value over Time", DT::dataTableOutput("sorp_table_contributions"), rownames = FALSE)
-      ),
-    )
+      )),
+ tabBox(type = "tabs", width = 12,
+    tabPanel("Accumulated Wealth", plotOutput("sorp_plot_fundvalue")),
+    tabPanel("Contributions and Fund Value over Time", DT::dataTableOutput("sorp_table_contributions"), rownames = FALSE)
   )
+    ),
+  )
+)
 )
      

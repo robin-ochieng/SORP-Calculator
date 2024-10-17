@@ -111,6 +111,21 @@
       }
     }
     return(annuity)
+  },
+
+    SORP_Table_Contributions <- function(SORP_Contributions, freq){
+    SORP_Contributions[1, 1:(length(SORP_Contributions[1, ]) - 1)] <- "-"
+    freq = p_list[match(freq, freq_list)]
+    if(freq == 1){
+      SORP_Contributions = data.frame(select(SORP_Contributions, -period, -age_exact))
+      colnames(SORP_Contributions) = c("Age", "Employee Contribution", "Employer Contribution", "Total Contribution", "Interest on Fund", "Fund Value at End of Period")
+    } else {
+      SORP_Contributions = data.frame(select(SORP_Contributions, -age_exact))
+      colnames(SORP_Contributions) = c("Age", "Period", "Employee Contribution", "Employer Contribution", "Total Contribution", "Interest on Fund", "Fund Value at End of Period")
+    }
+    SORP_Contributions <- datatable(SORP_Contributions, options = list(scrollX = TRUE, scrollY = "300px", paging = FALSE, searching = FALSE, info = FALSE, columnDefs = list(list(className = 'dt-center', targets = "_all"))), rownames= FALSE)
+    SORP_Contributions <- formatCurrency(SORP_Contributions, columns = c("Employee Contribution", "Employer Contribution", "Total Contribution", "Interest on Fund", "Fund Value at End of Period"), currency = "KES ", digits = 0)
+    return(SORP_Contributions)
   }
 
   )

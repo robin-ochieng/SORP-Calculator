@@ -56,7 +56,7 @@ round_2d <- function(x, two_d = F){
 
 # Define a custom theme using bslib
 my_theme <- bs_theme(
-  bootswatch = "darkly", # Using 'darkly' as the base theme; you can choose any other like 'flatly', 'sandstone', etc.
+  bootswatch = "flatly", # Using 'darkly' as the base theme; you can choose any other like 'flatly', 'sandstone', etc.
   bg = "#202123", 
   fg = "#E1E1E1", 
   primary = "#EA80FC", 
@@ -72,54 +72,27 @@ my_theme <- bs_theme(
   navbar_fg = "#ffffff"
 )
 
-ui <- dashboardPage(
-  title = "SORP Calculator",
-  dark = NULL,
-  help = NULL,
-  fullscreen = FALSE,
-  scrollToTop = TRUE,
-  freshTheme = my_theme,
-  dashboardHeader(
-    disable = TRUE, 
-    controlbarIcon = NULL,
-    fixed = TRUE
-    #tags$div(class = "control-bar", actionButton("toggleControlbar", "Input Controls", class = "btn btn-primary control-button"))
+ui <- fluidPage(
+  theme = my_theme,
+  useShinyjs(),
+  tags$head(
+    includeCSS("www/css/custom_styles.css"),
+    tags$link(href = "https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap", rel = "stylesheet"),
+    tags$link(rel = "shortcut icon", href = "favicon/kenbright2.ico", type = "image/x-icon")
   ),
-  sidebar = dashboardSidebar(
-    skin = "light",
-    sidebarMenu(
-      br(),
-      br(),
-      menuItem("Dashboard", tabName = "loan_calc", icon = icon("landmark"))
-    ),
-    div(class = "sidebar-footer",
-        img(src = "images/kenbright2.png")
-    )
-  ),
-  dashboardBody(
-    useShinyjs(),
-    tags$head(
-      includeCSS("www/css/custom_styles.css"),
-      tags$link(href = "https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap", rel = "stylesheet"),
-      tags$link(rel = "shortcut icon", href = "favicon/kenbright2.ico", type = "image/x-icon")
-      ),
-    tabItems(
-      tabItem(tabName = "loan_calc", source("modules/sorpCalculatorUI.R", local = TRUE)[1])
-  )
-  ),
-  footer = bs4DashFooter(
-    div(style = "background-color: #fff; color: black; text-align: center; padding: 8px;", 
+  br(),
+  br(),
+  source("modules/sorpCalculatorUI.R", local = TRUE)[1],
+  bs4DashFooter(
+    div(style = "background-color: #202123; color: white; text-align: center; padding: 8px;", 
         "© 2024 SORP Calculator | Powered by Robin")
   )
 )
 
-
 # Define server logic
 server <- function(input, output, session) {
-
   source("modules/functions.R", local = TRUE)[1]
   source("modules/sorpCalculatorServer.R", local = TRUE)[1]
-
 }
 
 # Run the application

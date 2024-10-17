@@ -20,21 +20,32 @@
     return(SORP_Pension_Payment * time)
   },
 
-  SORP_Plot_FundValue <- function(SORP_Contributions, freq){
-    freq = p_list[match(freq, freq_list)]
-    AgeandFundValue <- SORP_Contributions %>% select(age_exact, FundValue)
-    p <- ggplot(AgeandFundValue, aes(x = age_exact + (1 / freq), y = FundValue, fill = "#4A8DBF", colour = "#4A8DBF")) +
-      geom_bar(stat = "identity", colour = "#4A8DBF", fill = "#4A8DBF") + 
-      labs(x = "Age", y = "Fund Value", fill = NULL, color = NULL) +
-      scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(labels = scales::dollar_format(prefix = "€"), expand = c(0, 0)) + 
-      theme(legend.position = "none", panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-            axis.text.x = element_text(size = 10), axis.text.y = element_text(size = 10),
-            axis.title.x = element_text(margin = margin(t = 15, r = 0, b = 0, l = 0)),
-            axis.title.y = element_text(margin = margin(t = 0, r = 15, b = 0, l = 0)),
-            panel.background = element_blank(), axis.line = element_line(colour = "black"))
-    return(p)
-  },
+SORP_Plot_FundValue <- function(SORP_Contributions, freq){
+  freq = p_list[match(freq, freq_list)]
+  AgeandFundValue <- SORP_Contributions %>% 
+    select(age_exact, FundValue)
 
+  p <- ggplot(AgeandFundValue, aes(x = age_exact + (1 / freq), y = FundValue)) +
+    geom_bar(stat = "identity", fill = "#00BFA5", color = "white") +  # Using app's secondary color for fill
+    labs(x = "Age", y = "Fund Value") +
+    scale_x_continuous(expand = c(0, 0)) + 
+    scale_y_continuous(labels = dollar_format(prefix = "€"), expand = c(0, 0)) + 
+    theme_minimal(base_family = "Mulish") +
+    theme(
+      text = element_text(color = "#E1E1E1"),  # Light grey text
+      plot.background = element_rect(fill = "#202123"),  # Dark background
+      panel.background = element_rect(fill = "#202123"),
+      axis.text.x = element_text(size = 12, color = "#E1E1E1"),
+      axis.text.y = element_text(size = 12, color = "#E1E1E1"),
+      axis.title.x = element_text(color = "#E1E1E1", margin = margin(t = 15)),
+      axis.title.y = element_text(color = "#E1E1E1", margin = margin(r = 15)),
+      axis.line = element_line(color = "white"),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      legend.position = "none"
+    )
+  return(p)
+},
     SORP_Contributions <- function(age_1, age_2, salary, current_fundvalue, freq, emp_contri, empr_contri, salary_esc = 1.5, investment_charges = 0.5, equity_prop = 40, equity_rate = 4.5, fixed_prop = 30, fixed_rate = 1, cash_prop = 30, cash_rate = 0){
     
     freq = p_list[match(freq, freq_list)]

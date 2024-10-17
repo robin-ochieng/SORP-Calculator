@@ -3,7 +3,7 @@ list(
   br(),
 fluidRow(
   sidebarLayout(
-    sidebarPanel(style = "height:810px; overflow-y:auto",
+    sidebarPanel(style = "height:815px; overflow-y:auto",
       
       tabsetPanel(type = "tabs",
                   tabPanel("Parameters",
@@ -56,6 +56,7 @@ fluidRow(
           h4("Periodic Pension Payment:"),
           h3(textOutput("sorp_text_pension_payment_discounted"))
       )),
+      br(),
  tabBox(type = "tabs", width = 12,
     tabPanel("Accumulated Wealth", plotOutput("sorp_plot_fundvalue")),
     tabPanel("Contributions and Fund Value over Time", DT::dataTableOutput("sorp_table_contributions"), rownames = FALSE)
